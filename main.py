@@ -15,6 +15,12 @@ import smtplib
 
 app = Flask(__name__)
 
+
+# CONNECT TO POSTGRES DB
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+db = SQLAlchemy()
+db.init_app(app)
+
 @app.route('/')
 def index():
     return render_template('index.html')
