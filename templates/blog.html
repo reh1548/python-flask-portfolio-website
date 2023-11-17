@@ -9,136 +9,56 @@
       </div>
     </div>
   </div>
-  <!-- background shapes -->
-  <img src="static/images/illustrations/page-title.png" alt="illustrations" class="bg-shape-1 w-100">
-  <img src="static/images/illustrations/leaf-pink-round.png" alt="illustrations" class="bg-shape-2">
-  <img src="static/images/illustrations/dots-cyan.png" alt="illustrations" class="bg-shape-3">
-  <img src="static/images/illustrations/leaf-orange.png" alt="illustrations" class="bg-shape-4">
-  <img src="static/images/illustrations/leaf-yellow.png" alt="illustrations" class="bg-shape-5">
-  <img src="static/images/illustrations/dots-group-cyan.png" alt="illustrations" class="bg-shape-6">
-  <img src="static/images/illustrations/leaf-cyan-lg.png" alt="illustrations" class="bg-shape-7">
+<!-- background shapes -->
+<img src="{{ url_for('static', filename='images/illustrations/page-title.png') }}" alt="illustrations" class="bg-shape-1 w-100">
+<img src="{{ url_for('static', filename='images/illustrations/leaf-pink-round.png') }}" alt="illustrations" class="bg-shape-2">
+<img src="{{ url_for('static', filename='images/illustrations/dots-cyan.png') }}" alt="illustrations" class="bg-shape-3">
+<img src="{{ url_for('static', filename='images/illustrations/leaf-orange.png') }}" alt="illustrations" class="bg-shape-4">
+<img src="{{ url_for('static', filename='images/illustrations/leaf-yellow.png') }}" alt="illustrations" class="bg-shape-5">
+<img src="{{ url_for('static', filename='images/illustrations/dots-group-cyan.png') }}" alt="illustrations" class="bg-shape-6">
+<img src="{{ url_for('static', filename='images/illustrations/leaf-cyan-lg.png') }}" alt="illustrations" class="bg-shape-7">
 </section>
+
 <!-- /page title -->
 
 <!-- blog -->
 <section class="section">
   <div class="container">
     <div class="row">
+      {% for post in all_posts %}
         <div class="col-lg-4 col-sm-6 mb-4">
           <article class="card shadow">
-            <img class="rounded card-img-top" src="static/images/blog/post-5.jpg" alt="post-thumb">
+            <img class="rounded card-img-top" src="{{ post.img_url }}" alt="post-thumb">
             <div class="card-body">
-              <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-              <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et
-                dolore magna aliqua.</p>
-              <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
+              <h4 class="card-title">{{ post.title }}</h4>
+              <p class="cars-text">{{ post.subtitle }}</p>
+              <a href="{{ url_for('blog_single', post_id=post.id) }}" class="btn btn-xs btn-primary">Read More</a>
+              <!-- Only show delete button if user id is 1 (admin user) -->
+              {% if current_user.id == 1: %}
+              <a href="{{url_for('delete_post', post_id=post.id) }}" class="btn btn-xs btn-primary">Delete</a>
+              {% endif %}
             </div>
           </article>
         </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <article class="card shadow">
-          <img class="rounded card-img-top" src="static/images/blog/post-2.jpg" alt="post-thumb">
-          <div class="card-body">
-            <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-            <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et
-              dolore magna aliqua.</p>
-            <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
-          </div>
-        </article>
-      </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <article class="card shadow">
-          <img class="rounded card-img-top" src="static/images/blog/post-3.jpg" alt="post-thumb">
-          <div class="card-body">
-            <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-            <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et
-              dolore magna aliqua.</p>
-            <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
-          </div>
-        </article>
-      </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <article class="card shadow">
-          <img class="rounded card-img-top" src="static/images/blog/post-4.jpg" alt="post-thumb">
-          <div class="card-body">
-            <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-            <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et
-              dolore magna aliqua.</p>
-            <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
-          </div>
-        </article>
-      </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <article class="card shadow">
-          <img class="rounded card-img-top" src="static/images/blog/post-5.jpg" alt="post-thumb">
-          <div class="card-body">
-            <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-            <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et
-              dolore magna aliqua.</p>
-            <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
-          </div>
-        </article>
-      </div>
-      <div class="col-lg-4 col-sm-6 mb-4">
-        <article class="card shadow">
-          <img class="rounded card-img-top" src="static/images/blog/post-2.jpg" alt="post-thumb">
-          <div class="card-body">
-            <h4 class="card-title">Amazon increase income 1.5 Million</h4>
-            <p class="cars-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et
-              dolore magna aliqua.</p>
-            <a href="{{ url_for('blog_single') }}" class="btn btn-xs btn-primary">Read More</a>
-          </div>
-        </article>
-      </div>
+      {% endfor %}
     </div>
+    <!-- New Post -->
+    <!-- Only show Create Post button if user id is 1 (admin user) -->
+    {% if current_user.id == 1: %}
+    <div class="d-flex justify-content-center mb-4">
+      <a
+        class="btn btn-primary"
+        href="{{url_for('add_new_blog')}}"
+        >Create New Blog</a
+      >
+    </div>
+    {% endif %}
   </div>
 </section>
 <!-- /blog -->
 
-<!-- clients -->
-<section class="section bg-light">
-  <div class="container">
-    <div class="row">
-      <div class="col-12 text-center">
-        <h2 class="section-title">My Clients</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="client-logo-slider d-flex align-items-center">
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-1.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-2.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-3.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-4.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-5.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-1.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-2.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-3.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-4.png" alt="client-logo"></a>
-          <a href="contact.html" class="text-center d-block outline-0 p-4"><img class="d-unset img-fluid"
-              src="static/images/clients-logo/client-logo-5.png" alt="client-logo"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- /clients -->
 
 
 
-{% include "footer.html" %} 
+
+{% include "footer.html" %}

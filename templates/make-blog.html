@@ -1,0 +1,43 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+{% include "header.html" %}
+
+<!-- page title -->
+<section class="page-title bg-primary position-relative">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          {% if is_edit: %}
+          <h1 class="text-white font-tertiary">Edit Blog</h1>
+          {% else: %}
+          <h1 class="text-white font-tertiary">Create a Blog</h1>
+          {% endif %}
+  
+        </div>
+      </div>
+    </div>
+    <!-- background shapes -->
+    <img src="{{ url_for('static', filename='images/illustrations/page-title.png') }}" alt="illustrations" class="bg-shape-1 w-100">
+    <img src="{{ url_for('static', filename='images/illustrations/leaf-pink-round.png') }}" alt="illustrations" class="bg-shape-2">
+    <img src="{{ url_for('static', filename='images/illustrations/dots-cyan.png') }}" alt="illustrations" class="bg-shape-3">
+    <img src="{{ url_for('static', filename='images/illustrations/leaf-orange.png') }}" alt="illustrations" class="bg-shape-4">
+    <img src="{{ url_for('static', filename='images/illustrations/leaf-yellow.png') }}" alt="illustrations" class="bg-shape-5">
+    <img src="{{ url_for('static', filename='images/illustrations/dots-group-cyan.png') }}" alt="illustrations" class="bg-shape-6">
+    <img src="{{ url_for('static', filename='images/illustrations/leaf-cyan-lg.png') }}" alt="illustrations" class="bg-shape-7">
+    </section>
+  <!-- /page title -->
+
+<!-- Edit Blog Form -->
+<section class="section">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+              {{ ckeditor.load() }}
+              {{ ckeditor.config(name='body') }}
+              {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+            </div>
+          </div>
+</section>
+<!-- /Edit Blog Form -->
+
+{% include "footer.html" %}
+{% endblock %}

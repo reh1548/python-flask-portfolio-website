@@ -19,18 +19,18 @@
   <meta name="theme-name" content="kross" />
   
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="static/images/favicon.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}" />
   
   <!-- ** Plugins Needed for the Project ** -->
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="static/plugins/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/bootstrap.min.css') }}">
   <!-- slick slider -->
-  <link rel="stylesheet" href="static/plugins/slick/slick.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/slick/slick.css') }}">
   <!-- themefy-icon -->
-  <link rel="stylesheet" href="static/plugins/themify-icons/themify-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/themify-icons/themify-icons.css') }}">
 
   <!-- Main Stylesheet -->
-  <link href="static/css/style.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -38,7 +38,7 @@
 
 <header class="navigation fixed-top">
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <!-- <a class="navbar-brand font-tertiary h3" href="{{ url_for('index') }}"><img src="static/images/logo.png" alt="Myself"></a> -->
+    <!-- <a class="navbar-brand font-tertiary h3" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Myself"></a> -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -49,14 +49,27 @@
         <li class="nav-item active">
           <a class="nav-link" href="{{ url_for('index') }}">Home</a>
         </li>
+        <!-- Only show Login/Register if user is logged out. Otherwise show "Log Out" -->
+        {% if not current_user.is_authenticated: %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('registration') }}">Resigtration</a>
+        </li>
+        {% else: %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('about') }}">about</a>
+          <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('about') }}">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('blog') }}">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('portfolio') }}">Portfolio</a>
+          <a class="nav-link" href="{{ url_for('projects') }}">Projects</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>

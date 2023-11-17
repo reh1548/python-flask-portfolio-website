@@ -1,0 +1,31 @@
+Postgres Database Schema
+
+1. user
+
+name
+email
+password
+
+
+2. portfolio_project
+
+image_url
+project_link
+text
+
+
+3. Blog
+
+author_id
+title
+subtitle
+date
+body
+image_url
+
+
+4. comments
+
+text
+author_id
+post_id
