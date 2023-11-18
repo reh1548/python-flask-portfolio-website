@@ -40,3 +40,9 @@ class Message(FlaskForm):
     phone = StringField("Phone Number", validators=[DataRequired()])
     message_text = StringField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
+
+class CreateProject(FlaskForm):
+    title = StringField("Project Title", validators=[DataRequired()])
+    img_url = StringField("Project Image URL", validators=[DataRequired(), URL()])
+    body = CKEditorField("Project Description", validators=[DataRequired()])
+    submit = SubmitField("Submit")

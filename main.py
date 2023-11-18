@@ -93,6 +93,19 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
     parent_post = relationship("BlogPost", back_populates="comments")
 
+# Create a table for the projects
+class Projects(db.Model):
+    __tablename__ = "projects"
+    id = db.Column(db.Integer, primary_key=True)
+    # Create Foreign Key, "users.id" the users refers to the tablename of User.
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # Create reference to the User object. The "posts" refers to the posts property in the User class.
+    author = relationship("User", back_populates="posts")
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    img_url = db.Column(db.String(250), nullable=False)    
+
+
 
 with app.app_context():
     db.create_all()
@@ -108,6 +121,8 @@ def admin_only(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
 
 @app.route('/')
 def index():
@@ -172,8 +187,6 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
 
 
 @app.route('/about')
@@ -259,10 +272,27 @@ def delete_post(post_id):
 def projects():
     return render_template('projects.html')
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
 
+def message(msg):
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+        connection.starttls()
+        connection.login(user=my_mail, password=password)
+        connection.sendmail(
+            from_addr=my_mail, 
+            to_addrs=recipient_mail, 
+            msg=msg
+        )
+
+@app.route("/contact", methods=['GET', 'POST'])
+def contact():
+    form = Message()
+    if form.validate_on_submit():
+        message(f"Subject: Blog Site Message\n\n{form.name.data}\n{form.email.data}\n{form.phone.data}\n\nMessage:{form.message_text.data}")
+        form.name.data = ''
+        form.email.data = ''
+        form.phone.data = ''
+        form.message_text.data = ''
+    return render_template("contact.html", current_user=current_user, form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
