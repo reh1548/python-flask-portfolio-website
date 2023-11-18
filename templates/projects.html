@@ -24,7 +24,7 @@
 <!-- projects -->
 <section class="section">
   <div class="container">
-    <div class="row mb-5">
+    <!-- <div class="row mb-5">
       <div class="col-12">
         <div class="btn-group btn-group-toggle justify-content-center d-flex" data-toggle="buttons">
           <label class="btn btn-sm btn-primary active">
@@ -41,99 +41,43 @@
           </label>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row shuffle-wrapper">
+      {% for project in all_projects %}
       <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;design&quot;,&quot;illustration&quot;]">
         <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-1.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
+          <img src="{{ project.img_url }}" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
           <div class="hover-overlay">
             <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
+              <a class="btn btn-light btn-sm" href="{{ project.project_url }}">View project</a>
+              <!-- Only show delete button if user id is 1 (admin user) -->
+              {% if current_user.id == 1: %}
+              <a href="{{url_for('delete_project', project_id=project.id) }}" class="btn btn-xs btn-primary">Delete</a>
+              {% endif %}
             </div>
           </div>
         </div>
+        <h4>{{ project.title }}</h4>
       </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;branding&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-2.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;illustration&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-3.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;design&quot;,&quot;branding&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-6.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;illustration&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-8.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;design&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-5.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;branding&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-1.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item" data-groups="[&quot;design&quot;,&quot;illustration&quot;,&quot;branding&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-3.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-6 mb-4 shuffle-item illustration" data-groups="[&quot;illustration&quot;]">
-        <div class="position-relative rounded hover-wrapper">
-          <img src="static/images/portfolio/item-7.png" alt="portfolio-image" class="img-fluid rounded w-100 d-block">
-          <div class="hover-overlay">
-            <div class="hover-content">
-              <a class="btn btn-light btn-sm" href="#!">view project</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
+
+
+
+
+
+
     </div>
+        <!-- New Post -->
+    <!-- Only show Create Post button if user id is 1 (admin user) -->
+    {% if current_user.id == 1: %}
+    <div class="d-flex justify-content-center mb-4">
+      <a
+        class="btn btn-primary"
+        href="{{url_for('add_new_project')}}"
+        >Add New Project</a
+      >
+    </div>
+    {% endif %}
   </div>
 </section>
 <!-- /projects -->

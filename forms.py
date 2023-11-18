@@ -41,8 +41,8 @@ class Message(FlaskForm):
     message_text = StringField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
 
-class CreateProject(FlaskForm):
+class CreateProjectForm(FlaskForm):
     title = StringField("Project Title", validators=[DataRequired()])
     img_url = StringField("Project Image URL", validators=[DataRequired(), URL()])
-    body = CKEditorField("Project Description", validators=[DataRequired()])
+    project_url = StringField("Project URL", validators=[DataRequired(), URL()])
     submit = SubmitField("Submit")

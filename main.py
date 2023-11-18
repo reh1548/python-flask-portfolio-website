@@ -78,7 +78,7 @@ class User(UserMixin, db.Model):
     posts = relationship("BlogPost", back_populates="author")
     # Parent relationship: "comment_author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
-
+    projects = relationship("Projects", back_populates="author")
 
 # Create a table for the comments on the blog posts
 class Comment(db.Model):
@@ -97,13 +97,14 @@ class Comment(db.Model):
 class Projects(db.Model):
     __tablename__ = "projects"
     id = db.Column(db.Integer, primary_key=True)
-    # Create Foreign Key, "users.id" the users refers to the tablename of User.
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    # Create reference to the User object. The "posts" refers to the posts property in the User class.
-    author = relationship("User", back_populates="posts")
+    author = relationship("User", back_populates="projects")
     title = db.Column(db.String(250), unique=True, nullable=False)
-    body = db.Column(db.Text, nullable=False)
-    img_url = db.Column(db.String(250), nullable=False)    
+    date = db.Column(db.String(250), nullable=False)
+    img_url = db.Column(db.String(250), nullable=False)
+    project_url = db.Column(db.String(), nullable=False)
+
+
 
 
 
@@ -126,7 +127,9 @@ def admin_only(f):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    result = db.session.execute(db.select(Projects))
+    projects = result.scalars().all()
+    return render_template('index.html', all_projects=projects)
 
 
 # Register new users into the User database
@@ -192,6 +195,8 @@ def logout():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+# ===========================================BLOG SECTION===========================================
 
 @app.route('/blog')
 def blog():
@@ -268,10 +273,42 @@ def delete_post(post_id):
     db.session.commit()
     return redirect(url_for('blog'))
 
+# ================================= PROJECTS SECTION ===============================================
+
 @app.route('/projects')
 def projects():
-    return render_template('projects.html')
+    result = db.session.execute(db.select(Projects))
+    projects = result.scalars().all()
+    return render_template('projects.html', all_projects=projects, current_user=current_user)
 
+# Use a decorator so only an admin user can create new posts
+@app.route("/new-project", methods=["GET", "POST"])
+@admin_only
+def add_new_project():
+    form = CreateProjectForm()
+    if form.validate_on_submit():
+        new_project = Projects(
+            title=form.title.data,
+            img_url=form.img_url.data,
+            project_url=form.project_url.data,
+            author=current_user,
+            date=date.today().strftime("%B %d, %Y")
+        )
+        db.session.add(new_project)
+        db.session.commit()
+        return redirect(url_for("projects"))
+    return render_template("make-projects.html", form=form, current_user=current_user)
+
+# Use a decorator so only an admin user can delete a post
+@app.route("/delete-project/<int:project_id>")
+@admin_only
+def delete_project(project_id):
+    project_to_delete = db.get_or_404(Projects, project_id)
+    db.session.delete(project_to_delete)
+    db.session.commit()
+    return redirect(url_for('projects'))
+
+# =================CONTACT SECTION ==============================================================
 
 def message(msg):
     with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
