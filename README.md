@@ -2,7 +2,6 @@
 
 Welcome to the source code of my personal portfolio website built using Flask!
 
-## Live Link: https://rehans-corner.onrender.com/
 
 ## Table of Contents
 - [Introduction](#introduction)
